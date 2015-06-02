@@ -1,0 +1,56 @@
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+
+  $(document).ready(function(){
+	  
+	  $("#submit").click(function(event) {
+	      
+	      var name = $('input[name="name"]').val();
+	      var email = $('input[name="email"]').val();
+	      var birthyear = $('select[name="birthyear"]').val();
+	      var sex = $('input[name="sex"]:checked').val();
+	      var extremitiesnumber = $('input[name="extremitiesnumber"]:checked').val();
+	      var superabilities = $('select[name="superabilities[]"]').val();
+	      var bio = $('textarea[name="bio"]').val();
+	      var agree = $('input:checkbox[name="agree"]:checked').val();
+
+          var parameters = {
+	         "name" : name, 
+	         "email" : email, 
+	         "birthyear" : birthyear, 
+	         "sex=" : sex, 
+	         "extremitiesnumber=" : extremitiesnumber,
+	         "superabilities" : superabilities,
+	         "bio" : bio,
+	         "agree" : agree
+	      }
+
+		  var errors = false;
+		  var errors_string = '';   	      
+
+	      for (var key in parameters) {
+             if ((parameters[key] === '') || (parameters[key] === undefined) || (parameters[key].length === 0)) {
+               errors = true;  
+               console.log("Error: " + key + " is empty");
+               errors_string = errors_string + ' ' + key;
+             }
+		  }
+	      
+          console.log(JSON.stringify(parameters));
+          if (errors_string != '') {
+             alert("Error! The following fields are empty: " + errors_string);
+          }
+          if (errors) {
+             return false;
+          }
+
+          $.post('', $("form").serialize(), function(data, statusText) {
+        	    $("form").hide();
+        	    $("body").append(data);
+          });
+
+	      
+	      return true;
+	  });
+  }); 
+</script>
